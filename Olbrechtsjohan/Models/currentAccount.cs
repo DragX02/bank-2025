@@ -31,9 +31,9 @@ namespace Models
         {
             if (Balance >= 0)
             {
-                return Balance * 0.03m;
+                return Balance * 0.03;
             }
-            return Balance * 0.0975m;
+            return Balance * 0.0;
         }
     }
 }

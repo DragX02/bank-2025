@@ -11,7 +11,7 @@ namespace Models
 
         protected Account(string number, Person owner, decimal initialBalance = 0)
         {
-            if (string.IsNullOrWhiteSpace(number))
+            if (number <= 0)
             {
                 throw new ArgumentException("Account number cannot be empty.", nameof(number));
             }
@@ -40,6 +40,14 @@ namespace Models
             }
         }
 
-        protected abstract decimal CalculateInterest();
+        protected abstract decimal CalculateInterest(decimal balance)    
+        {
+            if (Balance >= 0)
+            {
+                return Balance * 0.03;
+            }
+            return Balance * 0.0;
+        }
+    
     }
 }
