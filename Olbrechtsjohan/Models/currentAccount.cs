@@ -8,8 +8,8 @@ namespace Models
     {
         public decimal LineOfCredit { get; set; }
 
-        public CurrentAccount(string number, Person owner, decimal initialBalance = 0)
-            : base(number, owner, initialBalance)
+        public CurrentAccount(string number, Person owner) 
+            : base(number, owner)
         {
             LineOfCredit = 0;
         }

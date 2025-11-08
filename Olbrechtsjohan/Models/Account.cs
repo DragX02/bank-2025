@@ -10,7 +10,12 @@ namespace Models
         public Person Owner { get; }
 
 
-        protected Account(string number, Person owner, decimal initialBalance = 0)
+        protected Account(string number, Person owner) 
+            :this(number, owner, 0)
+        {
+        }
+
+        protected Account(string number, Person owner, decimal initialBalance)
         {
             if (string.IsNullOrWhiteSpace(number))
             {
@@ -21,6 +26,7 @@ namespace Models
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             Balance = initialBalance;
         }
+        
 
         public virtual void Deposit(decimal amount)
         {

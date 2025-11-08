@@ -6,8 +6,8 @@ namespace Models
     {
         public DateTime? DateLastWithdraw { get; private set; }
 
-        public SavingAccount(string number, Person owner, decimal initialBalance = 0)
-            : base(number, owner, initialBalance)
+        public SavingAccount(string number, Person owner)
+            : base(number, owner)
         {
         }
 
