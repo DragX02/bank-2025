@@ -55,8 +55,13 @@ namespace Models
             if (newAccount != null)
             {
                 Accounts.Add(newAccount);
+                newAccount.NegativeBalanceEvent += NegativeBalanceAction;
                 Console.WriteLine($"Le compte {newAccount.Number} pour {newAccount.Owner.FirstName} {newAccount.Owner.LastName} a été ajouté.");
             }
+        }
+        public void NegativeBalanceAction(Account account)
+        {
+            Console.WriteLine($"Le numéro de compte {account.Number} vient de passer en négatif");
         }
 
         public void DisplayAccountsList()

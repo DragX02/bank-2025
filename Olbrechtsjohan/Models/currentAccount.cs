@@ -32,16 +32,24 @@ namespace Models
 
         public override void Withdraw(decimal amount)
         {
-            base.Withdraw(amount);
-
-            if (amount > Balance + LineOfCredit)
+            if (amount <= 0)
             {
-                Console.WriteLine("Le montant du retrait dépasse le solde et la ligne de crédit.");
-                return;
+                throw new ArgumentOutOfRangeException(nameof(amount), "Le montant du retrait doit être positif.");
             }
 
+            if (Balance - amount < -LineOfCredit)
+            {
+                throw new InvalidOperationException("Le montant du retrait dépasse le solde et la ligne de crédit autorisée.");
+            }
+            
+            decimal oldBalance = Balance;
             Balance -= amount;
             Console.WriteLine($"Retrait de ${amount} effectué. Nouveau solde : ${Balance}");
+
+            if (oldBalance >= 0 && Balance < 0)
+            {
+                RaiseNegativeBalanceEvent();
+            }
         }
 
         protected override decimal CalculateInterest()

@@ -3,15 +3,22 @@ using Abstraction;
 
 namespace Models
 {
-    public abstract class Account: IAccount
+    public abstract class Account : IAccount
     {
+        public delegate void NegativeBalanceDelegate(Account account);
+        public event NegativeBalanceDelegate NegativeBalanceEvent;
+
+        protected void RaiseNegativeBalanceEvent()
+        {
+            NegativeBalanceEvent?.Invoke(this);
+        }
+
         public string Number { get; }
         public decimal Balance { get; protected set; }
         public Person Owner { get; }
 
-
-        protected Account(string number, Person owner) 
-            :this(number, owner, 0)
+        protected Account(string number, Person owner)
+            : this(number, owner, 0)
         {
         }
 
@@ -25,8 +32,12 @@ namespace Models
             Number = number;
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
             Balance = initialBalance;
+
+            if (Balance < 0)
+            {
+                RaiseNegativeBalanceEvent();
+            }
         }
-        
 
         public virtual void Deposit(decimal amount)
         {
@@ -48,10 +59,16 @@ namespace Models
             {
                 throw new InvalidOperationException("Solde insuffisant pour effectuer le retrait.");
             }
+            
+            decimal oldBalance = Balance;
             Balance -= amount;
             Console.WriteLine($"Retrait de ${amount} effectué. Nouveau solde : ${Balance}");
+
+            if (oldBalance >= 0 && Balance < 0)
+            {
+                RaiseNegativeBalanceEvent();
+            }
         }
-      
 
         protected abstract decimal CalculateInterest();
 
