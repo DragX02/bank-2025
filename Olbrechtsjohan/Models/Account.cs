@@ -5,8 +5,8 @@ namespace Models
 {
     public abstract class Account : IAccount
     {
-        public delegate void NegativeBalanceDelegate(Account account);
-        public event NegativeBalanceDelegate NegativeBalanceEvent;
+        
+        public event Action<Account> NegativeBalanceEvent;
 
         protected void RaiseNegativeBalanceEvent()
         {
